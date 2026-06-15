@@ -1,0 +1,20 @@
+{
+  "name": "@vela/sdk",
+  "version": "0.1.0",
+  "description": "Vela Storefront SDK — wraps Medusa Store API + Vela AI Engine",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": ["vela", "medusa", "ecommerce", "ai", "headless"],
+  "license": "MIT",
+  "dependencies": {
+    "@medusajs/medusa-js": "^6.1.9"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
