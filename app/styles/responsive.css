@@ -1,0 +1,226 @@
+/* ============================================================================
+   VTron AI — Responsive & Mobile-First Base Styles
+   ============================================================================
+   Principles:
+   - Mobile-first: default styles are for mobile, @media queries scale up
+   - Touch targets ≥ 44px per WCAG 2.1
+   - Fluid typography via clamp()
+   - 8px spacing grid
+   - Inline tables on mobile: label+value stacking over horizontal scroll
+   ============================================================================ */
+
+/* ---- Custom Properties (design tokens) ---- */
+:root {
+  --vt-radius-sm: 6px;
+  --vt-radius-md: 10px;
+  --vt-radius-lg: 14px;
+  --vt-shadow-sm: 0 1px 2px oklch(0 0 0 / 0.04);
+  --vt-shadow-md: 0 2px 8px oklch(0 0 0 / 0.06);
+  --vt-shadow-lg: 0 4px 16px oklch(0 0 0 / 0.08);
+  --vt-transition: 0.15s ease;
+  --vt-touch-target: 44px;
+}
+
+/* ---- Base: Fluid typography ---- */
+html {
+  font-size: clamp(14px, 2.5vw, 16px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+/* ---- Touch-friendly: ensure all interactive elements meet 44px target ---- */
+button, [role="button"], a, input, select, textarea {
+  min-height: var(--vt-touch-target);
+  min-width: var(--vt-touch-target);
+}
+
+@media (min-width: 768px) {
+  button, [role="button"], a {
+    min-height: auto;
+    min-width: auto;
+  }
+}
+
+/* ---- Card enhancements ---- */
+@media (max-width: 640px) {
+  .Polaris-Card {
+    --pc-card-padding-xs: 12px;
+    --pc-card-padding-sm: 12px;
+  }
+}
+
+/* ---- Responsive table: inline label+value on mobile ---- */
+@media (max-width: 640px) {
+  .vt-table-responsive thead {
+    display: none;  /* hide headers on mobile */
+  }
+
+  .vt-table-responsive tbody tr {
+    display: block;
+    margin-bottom: 12px;
+    border: 1px solid oklch(0.9 0 0);
+    border-radius: var(--vt-radius-md);
+    padding: 12px;
+    background: var(--p-color-bg-surface, #fff);
+  }
+
+  .vt-table-responsive tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid oklch(0.94 0 0);
+    font-size: 0.875rem;
+  }
+
+  .vt-table-responsive tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .vt-table-responsive tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: oklch(0.5 0 0);
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+}
+
+/* ---- Chart container: fluid height ---- */
+.vt-chart-container {
+  width: 100%;
+  height: clamp(180px, 25dvh, 320px);
+  min-height: 180px;
+}
+
+@media (min-width: 768px) {
+  .vt-chart-container {
+    height: clamp(220px, 30vw, 350px);
+  }
+}
+
+/* ---- Grid overrides for very small screens (320px-374px) ---- */
+@media (max-width: 374px) {
+  /* Force single column on tiny screens */
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ---- Progress bar: ensure minimum width ---- */
+.vt-progress-wrapper {
+  min-width: 60px;
+  flex-shrink: 0;
+}
+
+/* ---- Container: max-width with centered content on large screens ---- */
+@media (min-width: 1440px) {
+  #main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+/* ---- Page title: responsive sizing ---- */
+@media (max-width: 640px) {
+  .Polaris-Page__Title {
+    font-size: 1.25rem !important;
+  }
+}
+
+/* ---- Hide desktop elements on mobile, and vice versa ---- */
+.vt-hide-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .vt-hide-mobile {
+    display: initial;
+  }
+  .vt-hide-desktop {
+    display: none;
+  }
+}
+
+/* ---- Smooth page transitions ---- */
+/* Eliminate Polaris navigation sidebar jitter */
+[class*="ItemInnerWrapper"],
+[class*="ItemInnerWrapper--selected"],
+[class*="ItemInnerWrapper--selected"]:hover {
+  transition: none !important;
+  will-change: auto !important;
+  contain: layout style !important;
+}
+[class*="Navigation__Item"]::before,
+[class*="Navigation__Item"]::after {
+  animation: none !important;
+  transition: none !important;
+}
+/* Stabilize main content to prevent nav reflow */
+#main-content {
+  contain: layout !important;
+  overflow-anchor: auto !important;
+}
+
+.page-transition-wrapper {
+  opacity: 1;
+  min-height: calc(100vh - 56px); /* prevent layout collapse during page transitions */
+  transition: opacity 0.15s ease;
+}
+
+/* ---- Focus visible: accessible outlines ---- */
+:focus-visible {
+  outline: 2px solid oklch(0.55 0.18 265);
+  outline-offset: 2px;
+}
+
+/* ---- Scrollbar styling ---- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.85 0 0);
+  border-radius: 3px;
+}
+
+/* Mobile: single column for dashboard/analytics 2-col grids */
+@media (max-width: 768px) {
+  .container div[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Mobile responsive tables */
+.vt-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.vt-table-responsive table {
+  min-width: 100%;
+  width: max-content;
+}
+@media (max-width: 640px) {
+  .vt-table-responsive table {
+    font-size: 13px;
+  }
+}
+
+/* ---- Print styles ---- */
+@media print {
+  body { font-size: 12pt; }
+  .Polaris-Navigation, .Polaris-TopBar { display: none; }
+}
